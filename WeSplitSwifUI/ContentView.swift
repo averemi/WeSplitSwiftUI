@@ -14,14 +14,16 @@ struct ContentView: View {
     private let tipPercentages = [0, 3, 5, 7, 10, 15, 20]
     @FocusState private var amountIsFocused: Bool
     
-    private var totalPerPerson: Double {
-        let peopleCount = Double(numberOfPeople + 2)
+    private var total: Double {
         let tipSelection = Double(tipPercenage)
-        
         let tipValue = checkAmount / 100 * tipSelection
         let grandTotal = checkAmount + tipValue
-        let amountPerPerson = grandTotal / peopleCount
-
+        return grandTotal
+    }
+    
+    private var totalPerPerson: Double {
+        let peopleCount = Double(numberOfPeople + 2)
+        let amountPerPerson = total / peopleCount
         return amountPerPerson
     }
     
@@ -52,7 +54,15 @@ struct ContentView: View {
                 }
                 
                 Section {
+                    Text(total, format: .currency(code: Locale.current.currencyCode ?? "USD"))
+                } header: {
+                    Text("Total")
+                }
+                
+                Section {
                     Text(totalPerPerson, format: .currency(code: Locale.current.currencyCode ?? "USD"))
+                } header: {
+                    Text("Amount per person")
                 }
             }
             .navigationTitle("WeSplit")
