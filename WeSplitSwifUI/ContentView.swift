@@ -8,28 +8,25 @@
 import SwiftUI
 
 struct ContentView: View {
-    /// Show the value of this property here
-    @State private var tapCount = 0
-    /// Two-way binding: show the value of this property here, but write any changes back to this property - whatever is in the text is also in the name of the property
-    @State private var name = ""
-
-    /// Our views are the function of their state - everything the user can see is just the visible representation of the structs and properties in our code
+    @State private var checkAmount = 0.0
+    @State private var numberOfPeople = 2
+    
     var body: some View {
         NavigationView {
             Form {
                 Section {
-                    Button ("Tap Count: \(tapCount)") {
-                        tapCount += 1
-                    }
-                    TextField("Enter your name", text: $name)
-                    Text("Your name is \(name)")
-                    ForEach(0 ..< 100) {
-                        Text("Row \($0)")
+                    TextField("Amount", value: $checkAmount, format: .currency(code: Locale.current.currencyCode ?? "USD"))
+                        .keyboardType(.decimalPad)
+
+                    Picker("Number of people", selection: $numberOfPeople) {
+                        ForEach(2 ..< 100) {
+                            Text("\($0) people")
+                        }
                     }
                 }
             }
-            .navigationTitle("SwiftUI")
-            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("WeSplit")
+            .navigationBarTitleDisplayMode(.large)
         }
     }
 }
