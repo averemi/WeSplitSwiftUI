@@ -31,43 +31,56 @@ struct ContentView: View {
         return amountPerPerson
     }
     
+    @ViewBuilder var baseInputSectionView: some View {
+        Section {
+            TextField("Amount", value: $checkAmount, format: currency)
+                .keyboardType(.decimalPad)
+                .focused($amountIsFocused)
+
+            Picker("Number of people", selection: $numberOfPeople) {
+                ForEach(2 ..< 100) {
+                    Text("\($0) people")
+                }
+            }
+        }
+    }
+    
+    @ViewBuilder var tipInputSectionView: some View {
+        Section {
+            Picker("Tip Percentage", selection: $tipPercenage) {
+                ForEach(tipPercentages, id: \.self) {
+                    Text($0, format: .percent)
+                }
+            }
+            .pickerStyle(.segmented)
+        } header: {
+            Text("How much tip would you like to leave?")
+        }
+    }
+    
+    @ViewBuilder var totalSectionView: some View {
+        Section {
+            Text(total, format: currency)
+        } header: {
+            Text("Total")
+        }
+    }
+    
+    @ViewBuilder var perPersonSectionView: some View {
+        Section {
+            Text(totalPerPerson, format: currency)
+        } header: {
+            Text("Amount per person")
+        }
+    }
+    
     var body: some View {
         NavigationView {
             Form {
-                Section {
-                    TextField("Amount", value: $checkAmount, format: currency)
-                        .keyboardType(.decimalPad)
-                        .focused($amountIsFocused)
-
-                    Picker("Number of people", selection: $numberOfPeople) {
-                        ForEach(2 ..< 100) {
-                            Text("\($0) people")
-                        }
-                    }
-                }
-                
-                Section {
-                    Picker("Tip Percentage", selection: $tipPercenage) {
-                        ForEach(tipPercentages, id: \.self) {
-                            Text($0, format: .percent)
-                        }
-                    }
-                    .pickerStyle(.segmented)
-                } header: {
-                    Text("How much tip would you like to leave?")
-                }
-                
-                Section {
-                    Text(total, format: currency)
-                } header: {
-                    Text("Total")
-                }
-                
-                Section {
-                    Text(totalPerPerson, format: currency)
-                } header: {
-                    Text("Amount per person")
-                }
+                baseInputSectionView
+                tipInputSectionView
+                totalSectionView
+                perPersonSectionView
             }
             .navigationTitle("WeSplit")
             .navigationBarTitleDisplayMode(.large)
