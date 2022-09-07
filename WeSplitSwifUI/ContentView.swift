@@ -11,8 +11,8 @@ struct ContentView: View {
     @State private var checkAmount = 0.0
     @State private var numberOfPeople = 2
     @State private var tipPercenage = 7
-    private let tipPercentages = [0, 3, 5, 7, 10, 15, 20]
     @FocusState private var amountIsFocused: Bool
+    private let tipPercentages = [0, 3, 5, 7, 10, 15, 20]
     
     private var currency: FloatingPointFormatStyle<Double>.Currency {
         return .currency(code: Locale.current.currencyCode ?? "USD")
